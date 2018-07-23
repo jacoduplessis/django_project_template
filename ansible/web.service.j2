@@ -1,0 +1,11 @@
+[Unit]
+Description="{{ app_name }} web server"
+PartOf={{ app_name }}.target
+
+[Service]
+PIDFile=/tmp/{{ app_name }}.gunicorn.pid
+User={{ app_user }}
+Group={{ app_group }}
+ExecStart={{ app_path }}/venv/bin/gunicorn {{ app_name }}.wsgi -b unix:/tmp/{{ app_name }}_web.sock  --pid /tmp/{{ app_name }}.gunicorn.pid
+Restart=always
+WorkingDirectory={{ app_path }}

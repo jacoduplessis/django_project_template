@@ -1,0 +1,16 @@
+from .base import *
+
+DEBUG = False
+
+ALLOWED_HOSTS = []
+
+INSTALLED_APPS += [
+    'raven.contrib.django.raven_compat',
+]
+
+RAVEN_CONFIG = {
+    'dsn': os.environ.get('SENTRY_DSN'),
+    'CELERY_LOGLEVEL': 'INFO',
+}
+
+SENTRY_CELERY_LOGLEVEL = os.environ.get('SENTRY_CELERY_LOGLEVEL', 'WARNING')

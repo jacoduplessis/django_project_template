@@ -1,0 +1,36 @@
+---
+- name: deploy application
+  hosts:
+    - webservers
+  tags:
+    - deploy
+  gather_facts: no
+  become: yes  # to restart systemd services
+  vars:
+    restart_services:
+      - web
+      - celery
+  tasks:
+    - name: copy code
+      copy:
+        dest: "{{app_path}}/dist/"
+        src: "../dist/{{app_name}}-{{app_version}}.tar.gz"
+        group: "{{app_group}}"
+        owner: "{{app_user}}"
+    - name: install project into virtualenv
+      pip:
+        name: "file://{{app_path}}/dist/{{app_name}}-{{app_version}}.tar.gz"
+        virtualenv: "{{app_path}}/venv"
+        virtualenv_command: "python3.6 -m venv"
+        # note, a tarball cannot be installed in editable mode
+    - name: collect static
+      command: "{{app_path}}/venv/bin/manage.py collectstatic --no-input"
+    - name: run migrations
+      command: "{{app_path}}/venv/bin/manage.py migrate --no-input"
+    - name: restart services
+      tags:
+        - restart
+      loop: "{{restart_services}}"
+      systemd:
+        name: "{{app_name}}.{{item}}.service"
+        state: restarted

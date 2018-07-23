@@ -1,0 +1,9 @@
+[run]
+source =
+    {{ project_name }}
+omit =
+    {{ project_name }}/wsgi.py
+    {{ project_name }}/settings/prod.py
+    {{ project_name }}/settings/local.py
+    {{ project_name }}/settings/base.py
+

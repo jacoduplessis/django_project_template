@@ -1,0 +1,6 @@
+[Unit]
+After=network.target
+Wants=Wants={% for service_name in app_services %}{{ app_name }}.{{ service_name }}.service {% endfor %}
+
+[Install]
+WantedBy=multi-user.target

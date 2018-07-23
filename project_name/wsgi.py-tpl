@@ -1,0 +1,10 @@
+import os
+import sys
+import pathlib
+import dotenv
+
+dotenv.read_dotenv(pathlib.Path(sys.executable).parent.parent.parent / '.env')
+
+from django.core.wsgi import get_wsgi_application
+
+application = get_wsgi_application()

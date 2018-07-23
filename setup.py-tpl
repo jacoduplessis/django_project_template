@@ -1,0 +1,24 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="{{ project_name }}",
+    version="0.0.1",
+    packages=find_packages(),
+    scripts=['manage.py'],
+    include_package_data=True,
+    install_requires=[
+        "django=={{ django_version }}",
+        "gunicorn",
+        "celery",
+        "django-dotenv",
+        "dj-database-url",
+        "psycopg2-binary",
+        "django-redis",
+        "redis",
+        "requests",
+        "raven",
+    ],
+    tests_require=[
+        "coverage"
+    ]
+)

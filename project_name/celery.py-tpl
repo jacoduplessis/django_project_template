@@ -1,0 +1,20 @@
+import sys
+import pathlib
+import dotenv
+from celery import Celery
+
+dotenv.read_dotenv(pathlib.Path(sys.executable).parent.parent.parent / '.env')
+
+app = Celery('{{ project_name }}')
+
+# Using a string here means the worker doesn't have to serialize
+# the configuration object to child processes.
+# - namespace='CELERY' means all celery-related configuration keys
+#   should have a `CELERY_` prefix.
+app.config_from_object('django.conf:settings', namespace='CELERY')
+
+# Load task modules from all registered Django app configs.
+# app.autodiscover_tasks(packages=[
+    # need to add packages that are not in INSTALLED_APPS
+])
+

@@ -1,0 +1,11 @@
+[Unit]
+Description="{{ app_name }} celery"
+PartOf={{ app_name }}.target
+
+[Service]
+PIDFile=/tmp/{{ app_name }}.celery.pid
+User={{ app_user }}
+Group={{ app_group }}
+ExecStart={{ app_path }}/venv/bin/celery worker -A {{ app_name }}.celery -B -c 1 --loglevel=INFO --pidfile=/tmp/{{ app_name }}.celery.pid
+Restart=always
+WorkingDirectory={{ app_path }}

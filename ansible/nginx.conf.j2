@@ -1,0 +1,16 @@
+server {
+    listen 80;
+
+    server_name {{ app_domain }};
+    access_log /var/log/nginx/{{ app_name }}-access.log;
+
+    location /static {
+        access_log off;
+        alias {{ app_path }}/static/;
+    }
+
+    location / {
+        include proxy_params;
+		    proxy_pass http://unix:/tmp/{{ app_name }}_web.sock;
+    }
+}

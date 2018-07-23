@@ -1,0 +1,78 @@
+---
+- name: install project
+  hosts:
+    - webservers
+  tags:
+    - deploy
+  gather_facts: no
+  tasks:
+    - name: create project dir
+      tags:
+        - setup
+      file:
+        path: "{{app_path}}"
+        state: directory
+        group: "{{app_group}}"
+        owner: "{{app_user}}"
+    - name: copy code
+      copy:
+        dest: "{{app_path}}/dist/"
+        src: "../dist/{{app_name}}-{{app_version}}.tar.gz"
+    - name: install project into virtualenv
+      pip:
+        name: "file://{{app_path}}/dist/{{app_name}}-{{app_version}}.tar.gz"
+        virtualenv: "{{app_path}}/venv"
+        virtualenv_command: "python3.6 -m venv"
+        # note, a tarball cannot be installed in editable mode
+
+- name: setup systemd
+  hosts:
+    - webservers
+  tags:
+    - systemd
+    - setup
+  gather_facts: no
+  become: yes
+  vars:
+    app_services:
+      - web
+      - celery
+  tasks:
+    - name: Create target
+      template:
+        src: target.j2
+        dest: "/etc/systemd/system/{{app_name}}.target"
+    - name: Create services
+      loop: "{{app_services}}"
+      template:
+        src: "{{item}}.service.j2"
+        dest: "/etc/systemd/system/{{app_name}}.{{item}}.service"
+    - name: Start and enable systemd target
+      systemd:
+        daemon_reload: yes
+        name: "{{app_name}}.target"
+        enabled: yes
+        state: started
+
+- name: setup nginx
+  hosts:
+    - webservers
+  gather_facts: no
+  become: yes
+  tags:
+    - nginx
+    - setup
+  tasks:
+    - name: Create nginx conf
+      template:
+        src: nginx.conf.j2
+        dest: "/etc/nginx/sites-available/{{app_name}}"
+    - name: Enable nginx
+      file:
+        src: "/etc/nginx/sites-available/{{app_name}}"
+        dest: "/etc/nginx/sites-enabled/{{app_name}}"
+        state: link
+    - name: Reload nginx
+      systemd:
+        name: nginx.service
+        state: reloaded

@@ -1,0 +1,17 @@
+webservers:
+  hosts:
+    127.0.0.1:
+  vars:
+    app_name: PROJECT
+    app_path: /srv/PROJECT
+    app_domain: PROJECT.example.com
+    app_version: 0.0.1
+    app_user: xxx
+    app_group: xxx
+
+dbservers:
+  hosts:
+    127.0.0.1:
+  vars:
+    db_name: PROJECT
+    db_user: PROJECT
