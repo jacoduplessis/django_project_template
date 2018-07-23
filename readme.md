@@ -12,11 +12,12 @@
 2. Create database and user
 
 - `createdb -h 127.0.0.1 -U postgres {{ project_name }}`
-- `createuser -h 127.0.0.1 -U postgres -P {{ project_name }}` (enter password "{{ project_name }}")
+- `createuser -h 127.0.0.1 -U postgres -P {{ project_name }}` (enter password)
 
-3. Edit .env
+3. Edit .env to add the following
 
-- enter at least DJANGO_SETTINGS_MODULE={{ project_name }}.settings.local
+- `DJANGO_SETTINGS_MODULE={{ project_name }}.settings.local`
+- `DATABASE_URL=postgres://{{ project_name }}:password@127.0.0.1/{{ project_name }}`
 
 4. Prepare database
 
@@ -32,7 +33,7 @@
 
 ## Deploy
 
-Two playbooks - `setup` and `deploy` are provided in `ansible` folder.
+Two playbooks — `setup` and `deploy` — are provided in `ansible` folder.
 
 Assumes the following are installed:
 
@@ -41,3 +42,7 @@ Assumes the following are installed:
 - `redis-server`
 - `postgresql-10`
 
+## Notes
+
+Because the project is build as a single sdist, all templates must be within
+an app - any entry to `TEMPLATE.DIRS` will not work.

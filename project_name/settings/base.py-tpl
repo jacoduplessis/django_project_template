@@ -79,7 +79,7 @@ WSGI_APPLICATION = '{{ project_name }}.wsgi.application'
 REDIS_URL = os.environ.get('REDIS_URL', "redis://127.0.0.1:6379/1")
 
 DATABASES = {
-    'default': dj_database_url.config(conn_max_age=600, default='postgres://{{ project_name }}:{{ project_name }}@127.0.0.1:5432/{{ project_name }}')
+    'default': dj_database_url.config(conn_max_age=600, default='postgres://postgres:postgres@localhost/postgres')
 }
 
 CACHES = {
