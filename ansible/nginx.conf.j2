@@ -4,6 +4,11 @@ server {
     server_name {{ app_domain }};
     access_log /var/log/nginx/{{ app_name }}-access.log;
 
+    location /favicon.ico {
+        access_log off;
+        empty_gif;
+    }
+
     location /static {
         access_log off;
         alias {{ app_path }}/static/;
