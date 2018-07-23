@@ -45,4 +45,8 @@ Assumes the following are installed:
 ## Notes
 
 Because the project is build as a single sdist, all templates must be within
-an app - any entry to `TEMPLATE.DIRS` will not work.
+an app - any entry to `TEMPLATE.DIRS` will not work. The same goes for
+`STATICFILE_DIRS`.
+
+Additionally, all template, static and data files need to be referenced in `MANIFEST.in`
+to be included in the release.
