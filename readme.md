@@ -24,12 +24,28 @@
 - `./manage.py migrate`
 - `./manage.py createsuperuser`
 
-4. Run server
+5. Run server
 
 ```
 ./manage.py runserver
 ```
 
+## Releasing
+
+Make sure the `bumpversion` tool is available. Install with `pipsi` if not.
+
+```
+bumpversion {major|minor|patch}
+```
+
+This will update the version number in `setup.py` and `ansible/inventory.yml`, create a commit and create a git
+tag.
+
+For a test run to see what will happen:
+
+```
+bumpversion {major|minor|patch} --verbose --dry-run
+```
 
 ## Deploy
 
@@ -41,6 +57,8 @@ Assumes the following are installed:
 - `nginx`
 - `redis-server`
 - `postgresql-10`
+
+When writing scripts that run via `manage.py`, be sure to reference it as `.../venv/bin/manage.py`.
 
 ## Notes
 
