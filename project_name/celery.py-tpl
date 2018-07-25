@@ -14,7 +14,10 @@ app = Celery('{{ project_name }}')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
 # Load task modules from all registered Django app configs.
+app.autodiscover_tasks()
+
+# If there are other packages containing tasks
 # app.autodiscover_tasks(packages=[
-    # need to add packages that are not in INSTALLED_APPS
-])
+#   # add packages here
+# ])
 
