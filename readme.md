@@ -2,7 +2,8 @@
 
 ## Setup
 
-1. Create virtual environment. The location is significant.
+1. Create virtual environment. The location is significant — it must be called `venv` and be
+placed in the root project folder.
 
 - `python3.6 -m venv venv`
 - `source venv/bin/activate`
