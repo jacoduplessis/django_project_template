@@ -1,0 +1,22 @@
+image: python:3.6
+
+variables:
+  DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/postgres"
+  DJANGO_SETTINGS_MODULE: "{{ project_name }}.settings.local"
+
+services:
+  - postgres:latest
+
+cache:
+  paths:
+    - ~/.cache/pip/
+
+test:
+  stage: test
+  script:
+    - pip install .
+    - coverage run manage.py test
+    - coverage report
+  only:
+    - master
+  coverage: '/^TOTAL.*\s+(\d+\%)$/'
