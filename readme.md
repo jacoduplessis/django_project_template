@@ -12,8 +12,9 @@ placed in the root project folder.
 
 2. Create database and user
 
-- `createdb -h 127.0.0.1 -U postgres {{ project_name }}`
 - `createuser -h 127.0.0.1 -U postgres -P {{ project_name }}` (enter password)
+- `createdb -h 127.0.0.1 -U postgres {{ project_name }} --owner={{ project_name }}`
+
 
 3. Edit .env to add the following
 
